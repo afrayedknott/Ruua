@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <Button
+        android:id="@+id/user_signin_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/centerview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="SIGN IN" />
+
+    <View
+        android:id="@+id/centerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/map_open_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/centerview"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="MAP" />
+
+</RelativeLayout>

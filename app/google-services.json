@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "737274815771",
+    "firebase_url": "https://ruua-228519.firebaseio.com",
+    "project_id": "ruua-228519",
+    "storage_bucket": "ruua-228519.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737274815771:android:90a7ab4961a05bfc",
+        "android_client_info": {
+          "package_name": "afrayedknott.github.com.ruua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "737274815771-m6lhumiogk3qk6jsfucb4jlvqoetvmhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "afrayedknott.github.com.ruua",
+            "certificate_hash": "b7c4e7524389d0c8370de4b0b4dbdb2c1bda1087"
+          }
+        },
+        {
+          "client_id": "737274815771-4tnh5je93tup95h6sm74bhq6uvvgtur6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2RWOUJl5Ep4ewP2-VBzPClwoA9ZzaQJU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "737274815771-4tnh5je93tup95h6sm74bhq6uvvgtur6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
