@@ -1,33 +1,28 @@
 package afrayedknott.github.com.ruua;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UserFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link UserFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UserFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+public class SupervisorFragment extends Fragment implements RecyclerViewAdapterFieldWorkerNamesList.ItemClickListener{
 
-    // TODO: Rename and change types of parameters
-    private int mParam1;
+    RecyclerViewAdapterFieldWorkerNamesList adapter;
 
     private OnFragmentInteractionListener mListener;
+    private static final String ARG_PARAM1 = "param1";
+    private int mParam1;
+    private ArrayList<User> assignedFieldWorkers;
 
-    public UserFragment() {
+
+    public SupervisorFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +31,11 @@ public class UserFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @return A new instance of fragment UserFragment.
+     * @return A new instance of fragment FieldWorkerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserFragment newInstance(int param1, Context context) {
-        UserFragment fragment = new UserFragment();
+    public static SupervisorFragment newInstance(int param1) {
+        SupervisorFragment fragment = new SupervisorFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -53,13 +48,28 @@ public class UserFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getInt(ARG_PARAM1);
         }
+
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_supervisor, container, false);
+
+        pullNamesFieldWorkersList();
+
+        // set up the RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_supervisor_fragment);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        adapter = new RecyclerViewAdapterFieldWorkerNamesList(this.getActivity(), assignedFieldWorkers);
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -70,6 +80,7 @@ public class UserFragment extends Fragment {
     }
 
 
+    /*
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -80,6 +91,13 @@ public class UserFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    */
 
     @Override
     public void onDetach() {
@@ -103,4 +121,21 @@ public class UserFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void pullNamesFieldWorkersList() {
+
+        //TODO: change this method to actually pull list of users
+
+        assignedFieldWorkers = new ArrayList<User>();
+        assignedFieldWorkers.add(new User("001", "jay", "Jay", "Choi"));
+        assignedFieldWorkers.add(new User("002", "grace", "Grace", "Choi"));
+        assignedFieldWorkers.add(new User("003", "eugene", "Eugene", "Choi"));
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+    }
+
 }

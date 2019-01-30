@@ -2,11 +2,8 @@ package afrayedknott.github.com.ruua;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 
 
 public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -21,9 +18,24 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a UserFragment (defined as a static inner class below).
-        return UserFragment.newInstance(position + 1, cont);
+
+        Fragment tempPagerFragment = null;
+
+        switch(position) {
+
+            case 0:
+                tempPagerFragment = FieldWorkerFragment.newInstance(1);
+                break;
+            case 1:
+                tempPagerFragment = SupervisorFragment.newInstance(1);
+                break;
+            case 2:
+                tempPagerFragment = AdminFragment.newInstance(1);
+                break;
+        }
+
+        return tempPagerFragment;
+
     }
 
     @Override
