@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         public void onClick(View view) {
 
             Intent intentToStartActivity =
-                    new Intent(HomeActivity.this, MapsActivity.class);
+                    new Intent(HomeActivity.this, AddressEditorActivity.class);
             startActivity(intentToStartActivity);
 
         }

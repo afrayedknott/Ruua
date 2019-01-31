@@ -14,13 +14,12 @@
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".UserFragmentedActivity"
-            android:label="Fragd"
+            android:label="UserFragmentedActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <meta-data
@@ -28,7 +27,7 @@
             android:value="AIzaSyBY0b9kHWUNXPC3VW6vta6WULFMuOgnpLk" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".AddressEditorActivity"
             android:label="Maps" />
     </application>
 

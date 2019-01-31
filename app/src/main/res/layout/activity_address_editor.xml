@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment class="afrayedknott.github.com.ruua.AddressEditorFragment"
-        android:id="@+id/titles"
-        android:layout_weight="1"
-        android:layout_width="0px"
-        android:layout_height="match_parent" />
-
     <Button
         android:id="@+id/button_back"
         android:layout_width="wrap_content"
@@ -24,21 +18,24 @@
         android:layout_height="wrap_content"
         android:text="@string/default_edit_text_address"
         android:layout_toRightOf="@+id/button_back"
-        android:layout_alignParentTop="true"/>
+        android:layout_toLeftOf="@id/button_submit"
+        android:layout_alignParentTop="true"
+        android:gravity="fill_horizontal"/>
 
     <Button
         android:id="@+id/button_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:layout_toRightOf="@+id/edittext_address_input"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"/>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="wrap_content"
         tools:context=".AddressEditorFragment"
+        android:layout_below="@id/button_submit"
         android:layout_alignParentBottom="true">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
