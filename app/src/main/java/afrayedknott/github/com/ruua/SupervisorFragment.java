@@ -1,6 +1,7 @@
 package afrayedknott.github.com.ruua;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,7 +63,7 @@ public class SupervisorFragment extends Fragment implements RecyclerViewAdapterF
         pullNamesFieldWorkersList();
 
         // set up the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_supervisor_fragment);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_field_worker_name_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
         adapter = new RecyclerViewAdapterFieldWorkerNamesList(this.getActivity(), assignedFieldWorkers);
         adapter.setClickListener(this);
@@ -126,6 +127,15 @@ public class SupervisorFragment extends Fragment implements RecyclerViewAdapterF
 
         //TODO: change this method to actually pull list of users
 
+        createDummyFieldWorkersList();
+        createDummyAssignedAddressListList();
+
+    }
+
+    public void createDummyFieldWorkersList() {
+
+        //TODO: remove when you have database of users
+
         assignedFieldWorkers = new ArrayList<User>();
         assignedFieldWorkers.add(new User("001", "jay", "Jay", "Choi"));
         assignedFieldWorkers.add(new User("002", "grace", "Grace", "Choi"));
@@ -133,9 +143,33 @@ public class SupervisorFragment extends Fragment implements RecyclerViewAdapterF
 
     }
 
+    public void createDummyAssignedAddressListList() {
+
+        //TODO: remove when you have database of address lists
+
+        assignedFieldWorkers.get(0).addAddress("2750 e washington blvd pasadena ca 91107");
+        assignedFieldWorkers.get(0).addAddress("201 S Lake Ave, Pasadena, CA 91101");
+        assignedFieldWorkers.get(0).addAddress("355 N Rosemead Blvd, Pasadena, CA 91107");
+        assignedFieldWorkers.get(1).addAddress("1055 Wilshire Blvd, Los Angeles, CA 90017 ");
+        assignedFieldWorkers.get(1).addAddress("2675 Foothill Blvd, La Crescenta, CA 91214");
+        assignedFieldWorkers.get(1).addAddress("3233 Foothill Blvd, La Crescenta-Montrose, CA 91214");
+        assignedFieldWorkers.get(1).addAddress("440 Vermont Ave #100, Los Angeles, CA 90020");
+        assignedFieldWorkers.get(1).addAddress("3250 W Olympic Blvd, Los Angeles, CA 90006");
+        assignedFieldWorkers.get(1).addAddress("920 Foothill Blvd, La Cañada Flintridge, CA 91011");
+        assignedFieldWorkers.get(2).addAddress("2675 Foothill Blvd, La Crescenta, CA 91214");
+        assignedFieldWorkers.get(2).addAddress("3233 Foothill Blvd, La Crescenta-Montrose, CA 91214");
+        assignedFieldWorkers.get(2).addAddress("920 Foothill Blvd, La Cañada Flintridge, CA 91011");
+
+    }
+
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this.getActivity(), "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+
+        Intent intentToStartActivity =
+                new Intent(getActivity(), AddressListActivity.class);
+        intentToStartActivity.putExtra("user", assignedFieldWorkers.get(position));
+        startActivity(intentToStartActivity);
+
     }
 
 }

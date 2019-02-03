@@ -11,8 +11,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class HomeActivity extends AppCompatActivity {
 
     //Views
-    Button userSignInButton;
-    Button mapOpenButton;
+    Button fieldWorkerSignInButton;
+    Button supervisorSignInButton;
+    Button adminSignInButton;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -22,33 +23,48 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         this.getSupportActionBar().hide();
 
-        userSignInButton = findViewById(R.id.user_signin_button);
-        userSignInButton.setOnClickListener(userSigninOnClickListener);
-
-        mapOpenButton = findViewById(R.id.map_open_button);
-        mapOpenButton.setOnClickListener(mapOpenOnClickListener);
+        fieldWorkerSignInButton = findViewById(R.id.field_worker_signin_button);
+        fieldWorkerSignInButton.setOnClickListener(fieldWorkerSignInButtonOnClickListener);
+        supervisorSignInButton = findViewById(R.id.supervisor_signin_button);
+        supervisorSignInButton.setOnClickListener(supervisorSignInButtonOnClickListener);
+        adminSignInButton = findViewById(R.id.admin_signin_button);
+        adminSignInButton.setOnClickListener(adminSignInButtonOnClickListener);
 
     }
 
-    private View.OnClickListener userSigninOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener fieldWorkerSignInButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
             Intent intentToStartActivity =
                     new Intent(HomeActivity.this, UserFragmentedActivity.class);
-            intentToStartActivity.putExtra("username", "Username");
+            intentToStartActivity.putExtra("role", 0);
             startActivity(intentToStartActivity);
 
         }
 
     };
 
-    private View.OnClickListener mapOpenOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener supervisorSignInButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
             Intent intentToStartActivity =
-                    new Intent(HomeActivity.this, AddressEditorActivity.class);
+                    new Intent(HomeActivity.this, UserFragmentedActivity.class);
+            intentToStartActivity.putExtra("role", 1);
+            startActivity(intentToStartActivity);
+
+        }
+
+    };
+
+    private View.OnClickListener adminSignInButtonOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+            Intent intentToStartActivity =
+                    new Intent(HomeActivity.this, UserFragmentedActivity.class);
+            intentToStartActivity.putExtra("role", 2);
             startActivity(intentToStartActivity);
 
         }

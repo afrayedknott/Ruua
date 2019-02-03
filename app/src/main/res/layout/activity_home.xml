@@ -7,13 +7,13 @@
     tools:context=".HomeActivity">
 
     <Button
-        android:id="@+id/user_signin_button"
+        android:id="@+id/field_worker_signin_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/centerview"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:text="SIGN IN" />
+        android:text="FIELD" />
 
     <View
         android:id="@+id/centerview"
@@ -22,12 +22,21 @@
         android:layout_centerInParent="true"/>
 
     <Button
-        android:id="@+id/map_open_button"
+        android:id="@+id/supervisor_signin_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/centerview"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:text="MAP" />
+        android:text="SUPERVISOR" />
+
+    <Button
+        android:id="@+id/admin_signin_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/supervisor_signin_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="ADMIN" />
 
 </RelativeLayout>

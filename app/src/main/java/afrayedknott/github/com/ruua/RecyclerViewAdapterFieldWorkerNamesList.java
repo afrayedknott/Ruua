@@ -24,7 +24,7 @@ public class RecyclerViewAdapterFieldWorkerNamesList extends RecyclerView.Adapte
     // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyvler_view_row_supervisor_fragment, parent, false);
+        View view = mInflater.inflate(R.layout.recyvler_view_row_field_worker_name, parent, false);
         return new ViewHolder(view);
     }
 

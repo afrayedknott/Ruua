@@ -10,10 +10,12 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
 
     Context cont;
     private FragmentManager mFragmentManager;
+    private int userRole;
 
-    public UserFragmentPagerAdapter(FragmentManager fm) {
+    public UserFragmentPagerAdapter(FragmentManager fm, int role) {
         super(fm);
         mFragmentManager = fm;
+        this.userRole = role;
     }
 
     @Override
@@ -41,7 +43,12 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 3;
+        switch(userRole) {
+            case 0: return 1;
+            case 1: return 2;
+            case 2: return 3;
+            default : return 1;
+        }
     }
 
 }

@@ -35,7 +35,6 @@ public class UserFragmentedActivity extends AppCompatActivity {
      */
 
     private User signedInUser;
-
     private UserFragmentPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -50,19 +49,32 @@ public class UserFragmentedActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        signedInUser = new User("001", "jechoi", "Jay", "Choi");
+        signedInUser.setRole(getIntent().getIntExtra("role", 0));
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager());
+        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager(), signedInUser.getRole());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        switch(signedInUser.getRole()) {
+            case 0:
+                tabLayout.removeTabAt(2);
+                tabLayout.removeTabAt(1);
+                break;
+            case 1:
+                tabLayout.removeTabAt(2);
+                break;
+            case 2:
 
+        }
     }
 
 

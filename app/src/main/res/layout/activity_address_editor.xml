@@ -19,8 +19,7 @@
         android:text="@string/default_edit_text_address"
         android:layout_toRightOf="@+id/button_back"
         android:layout_toLeftOf="@id/button_submit"
-        android:layout_alignParentTop="true"
-        android:gravity="fill_horizontal"/>
+        android:layout_alignParentTop="true" />
 
     <Button
         android:id="@+id/button_submit"
@@ -45,7 +44,7 @@
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".AddressEditorFragment" />
+            tools:context=".AddressEditorActivity" />
 
     </FrameLayout>
 

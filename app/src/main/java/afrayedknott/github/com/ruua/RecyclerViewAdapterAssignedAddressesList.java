@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class RecyclerViewAdapterFieldWorkerAssignedAddressesList extends RecyclerView.Adapter<RecyclerViewAdapterFieldWorkerAssignedAddressesList.ViewHolder> {
+public class RecyclerViewAdapterAssignedAddressesList extends RecyclerView.Adapter<RecyclerViewAdapterAssignedAddressesList.ViewHolder> {
 
     private ArrayList<String> assignedAddressList;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapterFieldWorkerAssignedAddressesList(Context context, ArrayList<String> inputAddressList) {
+    RecyclerViewAdapterAssignedAddressesList(Context context, ArrayList<String> inputAddressList) {
         this.mInflater = LayoutInflater.from(context);
         this.assignedAddressList = inputAddressList;
     }
