@@ -1,8 +1,11 @@
 package afrayedknott.github.com.ruua;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +19,16 @@ import android.view.ViewGroup;
  * Use the {@link FieldWorkerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FieldWorkerFragment extends Fragment {
+public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapterAssignedAddressesList.ItemClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "signed_in_user";
 
     // TODO: Rename and change types of parameters
-    private int mParam1;
+    private User signedInUser;
 
     private OnFragmentInteractionListener mListener;
+    private RecyclerViewAdapterAssignedAddressesList adapter;
 
     public FieldWorkerFragment() {
         // Required empty public constructor
@@ -34,14 +38,14 @@ public class FieldWorkerFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param signedInUser Parameter 1.
      * @return A new instance of fragment FieldWorkerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FieldWorkerFragment newInstance(int param1) {
+    public static FieldWorkerFragment newInstance(User signedInUser) {
         FieldWorkerFragment fragment = new FieldWorkerFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putParcelable(ARG_PARAM1, signedInUser);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +54,7 @@ public class FieldWorkerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            signedInUser = getArguments().getParcelable(ARG_PARAM1);
         }
 
     }
@@ -59,7 +63,16 @@ public class FieldWorkerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_field, container, false);
+        View view = inflater.inflate(R.layout.fragment_field, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_field_worker_name_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAddressList());
+        adapter.setClickListener(this);
+        recyclerView.setAdapter(adapter);
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -102,6 +115,20 @@ public class FieldWorkerFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+
+        Intent intentToStartActivity =
+                new Intent(getActivity(), AddressEditorActivity.class);
+        intentToStartActivity.putExtra("address", signedInUser.getAddressList().get(position));
+        intentToStartActivity.putStringArrayListExtra("address_list", signedInUser.getAddressList());
+        startActivity(intentToStartActivity);
+
+        /*TODO: Currently leads to AddressEditorActivity but it should actually call up Google Map Directions to provide utility for field workers
+         */
+
     }
 
 }

@@ -10,12 +10,12 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
 
     Context cont;
     private FragmentManager mFragmentManager;
-    private int userRole;
+    private User signedInUser;
 
-    public UserFragmentPagerAdapter(FragmentManager fm, int role) {
+    public UserFragmentPagerAdapter(FragmentManager fm, User signedInUser) {
         super(fm);
         mFragmentManager = fm;
-        this.userRole = role;
+        this.signedInUser = signedInUser;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
         switch(position) {
 
             case 0:
-                tempPagerFragment = FieldWorkerFragment.newInstance(1);
+                tempPagerFragment = FieldWorkerFragment.newInstance(signedInUser);
                 break;
             case 1:
                 tempPagerFragment = SupervisorFragment.newInstance(1);
@@ -43,7 +43,7 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        switch(userRole) {
+        switch(signedInUser.getRole()) {
             case 0: return 1;
             case 1: return 2;
             case 2: return 3;

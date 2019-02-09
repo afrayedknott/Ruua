@@ -36,7 +36,7 @@ public class AddressEditorActivity extends FragmentActivity implements OnMapRead
 
     //view properties;
     private GoogleMap mMap;
-    private String stringAddressActivity;
+    private String stringAddressSelected;
     private EditText addressInput;
     private Button submitButton;
 
@@ -46,12 +46,12 @@ public class AddressEditorActivity extends FragmentActivity implements OnMapRead
         setContentView(R.layout.activity_address_editor);
 
         //deliver Intent extras
-        stringAddressActivity = this.getIntent().getStringExtra("address");
+        stringAddressSelected = this.getIntent().getStringExtra("address");
         stringAddressArrayList = this.getIntent().getStringArrayListExtra("address_list");
 
         //instantiate views and customize their properties (excluding map)
         addressInput = findViewById(R.id.edittext_address_input);
-        addressInput.setText(stringAddressActivity);
+        addressInput.setText(stringAddressSelected);
         TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(addressInput, 1, 17, 1,
                 TypedValue.COMPLEX_UNIT_DIP);
 
@@ -111,7 +111,7 @@ public class AddressEditorActivity extends FragmentActivity implements OnMapRead
         mMap.addMarker(new MarkerOptions().position(locationHandler.getLatLng()).title("2"));
         */
 
-        locationHandler = new LocationHandler(this, stringAddressActivity);
+        locationHandler = new LocationHandler(this, stringAddressSelected);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locationHandler.getLatLng(), 15.0f));
 
     }

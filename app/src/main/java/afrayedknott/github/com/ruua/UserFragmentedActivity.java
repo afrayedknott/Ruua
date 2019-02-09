@@ -50,11 +50,11 @@ public class UserFragmentedActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        signedInUser = new User("001", "jechoi", "Jay", "Choi");
-        signedInUser.setRole(getIntent().getIntExtra("role", 0));
+        setDummySignedInUser();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager(), signedInUser.getRole());
+        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager(), signedInUser);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -101,6 +101,16 @@ public class UserFragmentedActivity extends AppCompatActivity {
     }
 
     public void onFragmentInteraction(Uri uri){
+
+    }
+
+    private void setDummySignedInUser(){
+
+        signedInUser = new User("001", "jechoi", "Jay", "Choi");
+        signedInUser.setRole(getIntent().getIntExtra("role", 0));
+        signedInUser.addAddress("2750 e washington blvd pasadena ca 91107");
+        signedInUser.addAddress("201 S Lake Ave, Pasadena, CA 91101");
+        signedInUser.addAddress("355 N Rosemead Blvd, Pasadena, CA 91107");
 
     }
 
