@@ -18,7 +18,8 @@ public class User implements Parcelable {
     private String lastName;
     private String fullName;
     private int role;
-    private ArrayList<String> addressList;
+    private ArrayList<String> assignedAddressList;
+    private ArrayList<String> assignedEmployeeIDList;
 
     public User(String id, String user, String first, String last) {
 
@@ -27,8 +28,9 @@ public class User implements Parcelable {
         this.firstName = first;
         this.lastName = last;
         setFullName(first, last);
-        this.addressList = new ArrayList<>(0);
         this.role = 0;
+        this.assignedAddressList = new ArrayList<>(0);
+        this.assignedEmployeeIDList = new ArrayList<>(0);
 
     }
 
@@ -39,26 +41,43 @@ public class User implements Parcelable {
         firstName = in.readString();
         lastName = in.readString();
         fullName = in.readString();
-        addressList = new ArrayList<>(0);
-        in.readStringList(addressList);
+        assignedAddressList = new ArrayList<>(0);
+        in.readStringList(assignedAddressList);
+        in.readStringList(assignedEmployeeIDList);
         role = in.readInt();
 
     }
 
+    public void addEmployeeID(String id) {
+        assignedEmployeeIDList.add(id);
+    }
+
+    public void removeEmployeeID(int idIndex) {
+        assignedEmployeeIDList.remove(idIndex);
+    }
+
+    public ArrayList<String> getEmployeeIDList() {
+        return assignedEmployeeIDList;
+    }
+
+    public void setEmployeeIDList(ArrayList<String> addressList) {
+        this.assignedAddressList = addressList;
+    }
+
     public void addAddress(String address) {
-        addressList.add(address);
+        assignedAddressList.add(address);
     }
 
     public void removeAddress(int addressIndex) {
-        addressList.remove(addressIndex);
+        assignedAddressList.remove(addressIndex);
     }
 
     public ArrayList<String> getAddressList() {
-        return addressList;
+        return assignedAddressList;
     }
 
     public void setAddressList(ArrayList<String> addressList) {
-        this.addressList = addressList;
+        this.assignedAddressList = addressList;
     }
 
     public String getUsername() {
@@ -122,7 +141,8 @@ public class User implements Parcelable {
         parcel.writeString(firstName);
         parcel.writeString(lastName);
         parcel.writeString(fullName);
-        parcel.writeStringList(addressList);
+        parcel.writeStringList(assignedAddressList);
+        parcel.writeStringList(assignedEmployeeIDList);
         parcel.writeInt(role);
 
     }
