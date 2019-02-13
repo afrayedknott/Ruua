@@ -29,6 +29,7 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
 
     private OnFragmentInteractionListener mListener;
     private RecyclerViewAdapterAssignedAddressesList adapter;
+    private LocationHandler locationHandler;
 
     public FieldWorkerFragment() {
         // Required empty public constructor
@@ -120,11 +121,16 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
     @Override
     public void onItemClick(View view, int position) {
 
-        Intent intentToStartActivity =
-                new Intent(getActivity(), AddressEditorActivity.class);
-        intentToStartActivity.putExtra("address", signedInUser.getAddressList().get(position));
-        intentToStartActivity.putStringArrayListExtra("address_list", signedInUser.getAddressList());
-        startActivity(intentToStartActivity);
+        String targetDestination = signedInUser.getAddressList().get(position);
+        locationHandler =
+                new LocationHandler(this.getActivity(), targetDestination);
+        double targetLat = locationHandler.getLatLng().latitude;
+        double targetLng = locationHandler.getLatLng().longitude;
+        String inputLatLngString = "google.navigation:q=" + targetLat + ", " + targetLng;
+        Uri gmmIntentUri = Uri.parse(inputLatLngString);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
 
         /*TODO: Currently leads to AddressEditorActivity but it should actually call up Google Map Directions to provide utility for field workers
          */

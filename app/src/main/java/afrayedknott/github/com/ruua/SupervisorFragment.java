@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class SupervisorFragment extends Fragment implements RecyclerViewAdapterFieldWorkerNamesList.ItemClickListener{
 
-    RecyclerViewAdapterFieldWorkerNamesList adapter;
+    private RecyclerViewAdapterFieldWorkerNamesList adapter;
 
     private OnFragmentInteractionListener mListener;
     private static final String ARG_PARAM1 = "param1";
