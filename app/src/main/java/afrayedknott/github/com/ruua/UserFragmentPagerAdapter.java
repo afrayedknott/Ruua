@@ -5,17 +5,21 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import java.util.ArrayList;
+
 
 public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
 
     Context cont;
     private FragmentManager mFragmentManager;
     private User signedInUser;
+    ArrayList<User> assignedEmployees;
 
-    public UserFragmentPagerAdapter(FragmentManager fm, User signedInUser) {
+    public UserFragmentPagerAdapter(FragmentManager fm, User signedInUser, ArrayList<User> assignedEmployees) {
         super(fm);
         mFragmentManager = fm;
         this.signedInUser = signedInUser;
+        this.assignedEmployees = assignedEmployees;
     }
 
     @Override
@@ -29,10 +33,10 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
                 tempPagerFragment = FieldWorkerFragment.newInstance(signedInUser);
                 break;
             case 1:
-                tempPagerFragment = SupervisorFragment.newInstance(1);
+                tempPagerFragment = SupervisorFragment.newInstance(signedInUser, assignedEmployees);
                 break;
             case 2:
-                tempPagerFragment = AdminFragment.newInstance(1);
+                tempPagerFragment = AdminFragment.newInstance(signedInUser, assignedEmployees);
                 break;
         }
 
@@ -43,10 +47,11 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        switch(signedInUser.getRole()) {
-            case 0: return 1;
-            case 1: return 2;
-            case 2: return 3;
+        switch(signedInUser.getUserRole()) {
+            case User.FIELD:
+                return 1;
+            case User.SUPERVISOR: return 2;
+            case User.ADMIN: return 3;
             default : return 1;
         }
     }

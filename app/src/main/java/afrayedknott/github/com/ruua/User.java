@@ -2,10 +2,13 @@ package afrayedknott.github.com.ruua;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.StringDef;
 
-import java.io.Serializable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.HashMap;
+
+
 
 //This used to be called User, but I decided I want to minimize complexity for myself and users by
 // just tracking stats per install. It's not necessary to track across reinstalls or separate
@@ -17,20 +20,28 @@ public class User implements Parcelable {
     private String firstName;
     private String lastName;
     private String fullName;
-    private int role;
     private ArrayList<String> assignedAddressList;
     private ArrayList<String> assignedEmployeeIDList;
+    private String currentUserRole;
 
-    public User(String id, String user, String first, String last) {
+    @StringDef({FIELD, SUPERVISOR, ADMIN})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface UserRole {}
+
+    public static final String FIELD = "field";
+    public static final String SUPERVISOR = "supervisor";
+    public static final String ADMIN = "admin";
+
+    public User(String id, String user, String first, String last, String inputUserRole) {
 
         this.employeeID = id;
         this.username = user;
         this.firstName = first;
         this.lastName = last;
         setFullName(first, last);
-        this.role = 0;
         this.assignedAddressList = new ArrayList<>(0);
         this.assignedEmployeeIDList = new ArrayList<>(0);
+        sterilizeAndSetUserRole(inputUserRole);
 
     }
 
@@ -42,17 +53,18 @@ public class User implements Parcelable {
         lastName = in.readString();
         fullName = in.readString();
         assignedAddressList = new ArrayList<>(0);
+        assignedEmployeeIDList = new ArrayList<>(0);
         in.readStringList(assignedAddressList);
         in.readStringList(assignedEmployeeIDList);
-        role = in.readInt();
+        currentUserRole = in.readString();
 
     }
 
-    public void addEmployeeID(String id) {
+    public void addEmployeeIDList(String id) {
         assignedEmployeeIDList.add(id);
     }
 
-    public void removeEmployeeID(int idIndex) {
+    public void removeEmployeeIDList(int idIndex) {
         assignedEmployeeIDList.remove(idIndex);
     }
 
@@ -60,8 +72,8 @@ public class User implements Parcelable {
         return assignedEmployeeIDList;
     }
 
-    public void setEmployeeIDList(ArrayList<String> addressList) {
-        this.assignedAddressList = addressList;
+    public void setEmployeeIDList(ArrayList<String> employeeIDList) {
+        this.assignedEmployeeIDList = employeeIDList;
     }
 
     public void addAddress(String address) {
@@ -120,12 +132,31 @@ public class User implements Parcelable {
         this.employeeID = employeeID;
     }
 
-    public int getRole() {
-        return role;
+    public void sterilizeAndSetUserRole(String userRoleFromFirestore) {
+
+        switch(userRoleFromFirestore) {
+            case "admin":
+                setUserRoleStringDef(User.ADMIN);
+                break;
+            case "supervisor":
+                setUserRoleStringDef(User.SUPERVISOR);
+                break;
+            case "field":
+                setUserRoleStringDef(User.FIELD);
+                break;
+            default :
+                setUserRoleStringDef(User.FIELD);
+                break;
+        }
+
     }
 
-    public void setRole(int role) {
-        this.role = role;
+    public String getUserRole() { return currentUserRole; }
+
+    public void setUserRoleStringDef(@UserRole String inputUserRole) {
+
+        currentUserRole = inputUserRole;
+
     }
 
     @Override
@@ -143,7 +174,7 @@ public class User implements Parcelable {
         parcel.writeString(fullName);
         parcel.writeStringList(assignedAddressList);
         parcel.writeStringList(assignedEmployeeIDList);
-        parcel.writeInt(role);
+        parcel.writeString(currentUserRole);
 
     }
 

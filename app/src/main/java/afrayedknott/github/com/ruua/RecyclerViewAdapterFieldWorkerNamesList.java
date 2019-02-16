@@ -11,14 +11,14 @@ import java.util.ArrayList;
 
 public class RecyclerViewAdapterFieldWorkerNamesList extends RecyclerView.Adapter<RecyclerViewAdapterFieldWorkerNamesList.ViewHolder> {
 
-    private ArrayList<User> assignedFieldWorkers;
+    private ArrayList<User> assignedEmployees;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapterFieldWorkerNamesList(Context context, ArrayList<User> assignedFieldWorkers) {
+    RecyclerViewAdapterFieldWorkerNamesList(Context context, ArrayList<User> assignedEmployees) {
         this.mInflater = LayoutInflater.from(context);
-        this.assignedFieldWorkers = assignedFieldWorkers;
+        this.assignedEmployees = assignedEmployees;
     }
 
     // inflates the row layout from xml when needed
@@ -31,14 +31,14 @@ public class RecyclerViewAdapterFieldWorkerNamesList extends RecyclerView.Adapte
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String fullName = assignedFieldWorkers.get(position).getFullName();
+        String fullName = assignedEmployees.get(position).getFullName();
         holder.textViewFieldWorkerName.setText(fullName);
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return assignedFieldWorkers.size();
+        return assignedEmployees.size();
     }
 
 
@@ -60,7 +60,7 @@ public class RecyclerViewAdapterFieldWorkerNamesList extends RecyclerView.Adapte
 
     // convenience method for getting data at click position
     String getItem(int id) {
-        return assignedFieldWorkers.get(id).getFullName();
+        return assignedEmployees.get(id).getFullName();
     }
 
     // allows clicks events to be caught

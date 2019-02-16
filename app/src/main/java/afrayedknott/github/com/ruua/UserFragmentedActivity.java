@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class UserFragmentedActivity extends AppCompatActivity {
 
     /**
@@ -35,6 +37,7 @@ public class UserFragmentedActivity extends AppCompatActivity {
      */
 
     private User signedInUser;
+    private ArrayList<User> assignedEmployees;
     private UserFragmentPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -47,14 +50,15 @@ public class UserFragmentedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_fragmented);
 
+        signedInUser = this.getIntent().getParcelableExtra("signed_in_user");
+        assignedEmployees = this.getIntent().getParcelableArrayListExtra("assigned_employees");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setDummySignedInUser();
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager(), signedInUser);
+        mSectionsPagerAdapter = new UserFragmentPagerAdapter(getFragmentManager(), signedInUser, assignedEmployees);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -64,15 +68,17 @@ public class UserFragmentedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        switch(signedInUser.getRole()) {
-            case 0:
+        switch(signedInUser.getUserRole()) {
+            case User.FIELD:
                 tabLayout.removeTabAt(2);
                 tabLayout.removeTabAt(1);
                 break;
-            case 1:
+            case User.SUPERVISOR:
                 tabLayout.removeTabAt(2);
                 break;
-            case 2:
+            case User.ADMIN:
+                break;
+            default: break;
 
         }
     }
@@ -104,14 +110,6 @@ public class UserFragmentedActivity extends AppCompatActivity {
 
     }
 
-    private void setDummySignedInUser(){
 
-        signedInUser = new User("001", "jechoi", "Jay", "Choi");
-        signedInUser.setRole(getIntent().getIntExtra("role", 0));
-        signedInUser.addAddress("2750 e washington blvd pasadena ca 91107");
-        signedInUser.addAddress("201 S Lake Ave, Pasadena, CA 91101");
-        signedInUser.addAddress("355 N Rosemead Blvd, Pasadena, CA 91107");
-
-    }
 
 }

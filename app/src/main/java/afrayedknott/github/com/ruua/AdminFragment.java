@@ -8,13 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-;
+;import java.util.ArrayList;
 
 public class AdminFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
-    private static final String ARG_PARAM1 = "param1";
-    private int mParam1;
+    private static final String ARG_PARAM1 = "signed_in_user";
+    private static final String ARG_PARAM2 = "assigned_employees";
+    private ArrayList<User> assignedEmployees;
+
+    // TODO: Rename and change types of parameters
+    private User signedInUser;
 
     public AdminFragment() {
         // Required empty public constructor
@@ -24,14 +28,15 @@ public class AdminFragment extends Fragment{
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
+     * @param signedInUser Parameter 1.
      * @return A new instance of fragment FieldWorkerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AdminFragment newInstance(int param1) {
+    public static AdminFragment newInstance(User signedInUser, ArrayList<User> assignedEmployees) {
         AdminFragment fragment = new AdminFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, param1);
+        args.putParcelable(ARG_PARAM1, signedInUser);
+        args.putParcelableArrayList(ARG_PARAM2, assignedEmployees);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,7 +45,7 @@ public class AdminFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getInt(ARG_PARAM1);
+            signedInUser = getArguments().getParcelable(ARG_PARAM1);
         }
 
     }

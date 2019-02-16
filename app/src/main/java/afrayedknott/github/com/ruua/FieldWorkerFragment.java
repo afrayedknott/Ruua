@@ -71,7 +71,6 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
         adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAddressList());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
-
         return view;
 
     }
