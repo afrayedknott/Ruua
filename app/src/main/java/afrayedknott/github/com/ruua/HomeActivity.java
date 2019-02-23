@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -13,6 +14,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,50 +83,50 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public void onClick(View view)
         {
-            fsH.getUserFromFirestore("001");
+            pullSignedInUserFromFirestore2("001");
         }
 
     };
 
-    private void pullSignedInUserFromFirestore2(String employeeID)
+    int fetchedUserCount = 0;
+    int totalNumberOfAssignedUsers = 0;
+
+    private void pullSignedInUserFromFirestore2(final String employeeID)
     {
 
-        fsH.getUserFromFirestore(employeeID).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-        {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot)
-            {
-                if(documentSnapshot.exists())
-                {
-                    signedInUser = documentSnapshot.toObject(User.class);
-                }
-                else
-                    {
-                    Toast.makeText(HomeActivity.this, "Document does not exist",Toast.LENGTH_SHORT).show();
-                    }
-            }
-        }).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-        {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot)
-            {
+        final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users").document(employeeID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override // Callback called when the signed in user is finished being fetched
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    for(int employeeIDIter = 0; employeeIDIter < signedInUser.getAssignedEmployeeIDList().size(); employeeIDIter++)
-                    {
-                        User tempUser = documentSnapshot.toObject(User.class);
-                        assignedEmployees.add(tempUser);
+                    signedInUser = documentSnapshot.toObject(User.class);
+                    totalNumberOfAssignedUsers = signedInUser.getAssignedEmployeeIDList().size();
+
+                    for (String assignedEmployeeID : signedInUser.getAssignedEmployeeIDList()) {
+                        firestore.collection("Users").document(assignedEmployeeID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+                        {
+                            @Override // callback called when each of his assigned users is fetched
+                            public void onSuccess(DocumentSnapshot assignedDocumentSnapshot) {
+                                fetchedUserCount++;
+                                User assignedUser = assignedDocumentSnapshot.toObject(User.class);
+                                assignedEmployees.add(assignedUser);
+                                if (fetchedUserCount == totalNumberOfAssignedUsers) {
+                                    allUsersAreFetched();
+                                }
+                            }
+                        });
+
                     }
-                    intentToStartActivity.putExtra("signed_in_user", signedInUser);
-                    intentToStartActivity.putParcelableArrayListExtra("assigned_employees", assignedEmployees);
-                    startActivity(intentToStartActivity);
                 }
-                else
-                    {
-                    Toast.makeText(HomeActivity.this, "Document does not exist", Toast.LENGTH_SHORT).show();
-                    }
             }
         });
+        Log.d("eugene", "outside the callback success");
 
+    }
+
+    public void allUsersAreFetched() {
+        // move on...
+        Log.d("eugene", "allUsersAreFetched");
     }
 
     /*
