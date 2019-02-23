@@ -68,7 +68,7 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_field_worker_name_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAddressList());
+        adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAssignedAddressList());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return view;
@@ -120,7 +120,7 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
     @Override
     public void onItemClick(View view, int position) {
 
-        String targetDestination = signedInUser.getAddressList().get(position);
+        String targetDestination = signedInUser.getAssignedAddressList().get(position);
         locationHandler =
                 new LocationHandler(this.getActivity(), targetDestination);
         double targetLat = locationHandler.getLatLng().latitude;

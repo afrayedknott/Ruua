@@ -68,15 +68,15 @@ public class UserFragmentedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        switch(signedInUser.getUserRole()) {
-            case User.FIELD:
+        switch(signedInUser.getCurrentUserRole()) {
+            case "field":
                 tabLayout.removeTabAt(2);
                 tabLayout.removeTabAt(1);
                 break;
-            case User.SUPERVISOR:
+            case "supervisor":
                 tabLayout.removeTabAt(2);
                 break;
-            case User.ADMIN:
+            case "admin":
                 break;
             default: break;
 

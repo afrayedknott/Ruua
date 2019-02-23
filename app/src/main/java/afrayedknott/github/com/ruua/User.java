@@ -24,6 +24,8 @@ public class User implements Parcelable {
     private ArrayList<String> assignedEmployeeIDList;
     private String currentUserRole;
 
+    //can't use StringDef within User class because Firestore doesn't recognize it
+    /*
     @StringDef({FIELD, SUPERVISOR, ADMIN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface UserRole {}
@@ -31,6 +33,10 @@ public class User implements Parcelable {
     public static final String FIELD = "field";
     public static final String SUPERVISOR = "supervisor";
     public static final String ADMIN = "admin";
+    */
+
+    //empty constructor as required by Firestore
+    public User() { }
 
     public User(String id, String user, String first, String last, String inputUserRole) {
 
@@ -41,7 +47,8 @@ public class User implements Parcelable {
         setFullName(first, last);
         this.assignedAddressList = new ArrayList<>(0);
         this.assignedEmployeeIDList = new ArrayList<>(0);
-        sterilizeAndSetUserRole(inputUserRole);
+        this.currentUserRole = inputUserRole;
+        // sterilizeAndSetUserRole(inputUserRole);
 
     }
 
@@ -60,35 +67,35 @@ public class User implements Parcelable {
 
     }
 
-    public void addEmployeeIDList(String id) {
+    public void addEmployeeIDToAssignedList(String id) {
         assignedEmployeeIDList.add(id);
     }
 
-    public void removeEmployeeIDList(int idIndex) {
+    public void removeEmployeeIDFromAssignedList(int idIndex) {
         assignedEmployeeIDList.remove(idIndex);
     }
 
-    public ArrayList<String> getEmployeeIDList() {
+    public ArrayList<String> getAssignedEmployeeIDList() {
         return assignedEmployeeIDList;
     }
 
-    public void setEmployeeIDList(ArrayList<String> employeeIDList) {
+    public void setAssignedEmployeeIDList(ArrayList<String> employeeIDList) {
         this.assignedEmployeeIDList = employeeIDList;
     }
 
-    public void addAddress(String address) {
+    public void addAddressToList(String address) {
         assignedAddressList.add(address);
     }
 
-    public void removeAddress(int addressIndex) {
+    public void removeAddressFromList(int addressIndex) {
         assignedAddressList.remove(addressIndex);
     }
 
-    public ArrayList<String> getAddressList() {
+    public ArrayList<String> getAssignedAddressList() {
         return assignedAddressList;
     }
 
-    public void setAddressList(ArrayList<String> addressList) {
+    public void setAssignedAddressList(ArrayList<String> addressList) {
         this.assignedAddressList = addressList;
     }
 
@@ -132,6 +139,13 @@ public class User implements Parcelable {
         this.employeeID = employeeID;
     }
 
+    public String getCurrentUserRole() { return currentUserRole; }
+
+    public void setCurrentUserRole(String userRole) {this.currentUserRole = userRole;}
+
+
+    //can't use StringDef within User class because Firestore doesn't recognize it
+    /*
     public void sterilizeAndSetUserRole(String userRoleFromFirestore) {
 
         switch(userRoleFromFirestore) {
@@ -151,13 +165,11 @@ public class User implements Parcelable {
 
     }
 
-    public String getUserRole() { return currentUserRole; }
-
     public void setUserRoleStringDef(@UserRole String inputUserRole) {
 
         currentUserRole = inputUserRole;
 
-    }
+    } */
 
     @Override
     public int describeContents() {

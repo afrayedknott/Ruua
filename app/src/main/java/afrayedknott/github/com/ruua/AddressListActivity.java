@@ -7,8 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import java.util.ArrayList;
-
 public class AddressListActivity extends AppCompatActivity implements RecyclerViewAdapterAssignedAddressesList.ItemClickListener{
 
     private User clickedUser;
@@ -26,7 +24,7 @@ public class AddressListActivity extends AppCompatActivity implements RecyclerVi
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_address_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapterAssignedAddressesList(this, clickedUser.getAddressList());
+        adapter = new RecyclerViewAdapterAssignedAddressesList(this, clickedUser.getAssignedAddressList());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -37,8 +35,8 @@ public class AddressListActivity extends AppCompatActivity implements RecyclerVi
 
         Intent intentToStartActivity =
                 new Intent(this, AddressEditorActivity.class);
-        intentToStartActivity.putExtra("address", clickedUser.getAddressList().get(position));
-        intentToStartActivity.putStringArrayListExtra("address_list", clickedUser.getAddressList());
+        intentToStartActivity.putExtra("address", clickedUser.getAssignedAddressList().get(position));
+        intentToStartActivity.putStringArrayListExtra("address_list", clickedUser.getAssignedAddressList());
         startActivity(intentToStartActivity);
 
     }

@@ -47,11 +47,11 @@ public class UserFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        switch(signedInUser.getUserRole()) {
-            case User.FIELD:
+        switch(signedInUser.getCurrentUserRole()) {
+            case "field":
                 return 1;
-            case User.SUPERVISOR: return 2;
-            case User.ADMIN: return 3;
+            case "supervisor": return 2;
+            case "admin": return 3;
             default : return 1;
         }
     }
