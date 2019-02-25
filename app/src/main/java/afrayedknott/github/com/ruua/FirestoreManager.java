@@ -13,13 +13,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirestoreHandler
+public class FirestoreManager
 {
 
     private FirebaseFirestore db;
     private CollectionReference userCollectionsRef;
 
-    public FirestoreHandler()
+    public FirestoreManager()
     {
         db = FirebaseFirestore.getInstance();
         userCollectionsRef = db.collection("Users");

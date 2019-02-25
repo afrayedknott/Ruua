@@ -1,26 +1,17 @@
 package afrayedknott.github.com.ruua;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,7 +28,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Intent intentToStartActivity;
 
-    private FirestoreHandler fsH;
+    private FirestoreManager fsH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         this.getSupportActionBar().hide();
 
-        fsH = new FirestoreHandler();
+        fsH = new FirestoreManager();
         assignedEmployees = new ArrayList<User>(0);
 
         fieldWorkerSignInButton = findViewById(R.id.field_worker_signin_button);
@@ -125,7 +116,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void allUsersAreFetched() {
-        // move on...
+        intentToStartActivity.putExtra("signed_in_user", signedInUser);
+        intentToStartActivity.putParcelableArrayListExtra("assigned_employees", assignedEmployees);
+        startActivity(intentToStartActivity);
         Log.d("eugene", "allUsersAreFetched");
     }
 
@@ -153,9 +146,7 @@ public class HomeActivity extends AppCompatActivity {
                         User tempUser = doc.getResult().toObject(User.class);
                         assignedEmployees.add(tempUser);
                     }
-                    intentToStartActivity.putExtra("signed_in_user", signedInUser);
-                    intentToStartActivity.putParcelableArrayListExtra("assigned_employees", assignedEmployees);
-                    startActivity(intentToStartActivity);
+
             }
         });
     }
