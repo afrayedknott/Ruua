@@ -2,12 +2,9 @@ package afrayedknott.github.com.ruua;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StringDef;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 
 //This used to be called User, but I decided I want to minimize complexity for myself and users by
@@ -20,7 +17,7 @@ public class User implements Parcelable {
     private String firstName;
     private String lastName;
     private String fullName;
-    private ArrayList<String> assignedAddressList;
+    private HashMap<String, String> assignedAddressMap;
     private ArrayList<String> assignedEmployeeIDList;
     private String currentUserRole;
 
@@ -45,7 +42,7 @@ public class User implements Parcelable {
         this.firstName = first;
         this.lastName = last;
         setFullName(first, last);
-        this.assignedAddressList = new ArrayList<>(0);
+        this.assignedAddressMap = new HashMap<>(0);
         this.assignedEmployeeIDList = new ArrayList<>(0);
         this.currentUserRole = inputUserRole;
         // sterilizeAndSetUserRole(inputUserRole);
@@ -59,9 +56,12 @@ public class User implements Parcelable {
         firstName = in.readString();
         lastName = in.readString();
         fullName = in.readString();
-        assignedAddressList = new ArrayList<>(0);
+        ArrayList<String> assignedAddressMapKeysList = new ArrayList<>(0);
+        in.readStringList(assignedAddressMapKeysList);
+        ArrayList<String> assignedAddressMapValuesList = new ArrayList<>(0);
+        in.readStringList(assignedAddressMapValuesList);
+        assignedAddressMap = recomposeHashMap(assignedAddressMapKeysList, assignedAddressMapValuesList);
         assignedEmployeeIDList = new ArrayList<>(0);
-        in.readStringList(assignedAddressList);
         in.readStringList(assignedEmployeeIDList);
         currentUserRole = in.readString();
 
@@ -83,20 +83,20 @@ public class User implements Parcelable {
         this.assignedEmployeeIDList = employeeIDList;
     }
 
-    public void addAddressToList(String address) {
-        assignedAddressList.add(address);
+    public void addAddressToList(String key, String address) {
+        assignedAddressMap.put(key, address);
     }
 
     public void removeAddressFromList(int addressIndex) {
-        assignedAddressList.remove(addressIndex);
+        assignedAddressMap.remove(addressIndex);
     }
 
-    public ArrayList<String> getAssignedAddressList() {
-        return assignedAddressList;
+    public HashMap<String, String> getAssignedAddressMap() {
+        return assignedAddressMap;
     }
 
-    public void setAssignedAddressList(ArrayList<String> addressList) {
-        this.assignedAddressList = addressList;
+    public void setAssignedAddressMap(HashMap<String, String> addressList) {
+        this.assignedAddressMap = addressList;
     }
 
     public String getUsername() {
@@ -143,6 +143,36 @@ public class User implements Parcelable {
 
     public void setCurrentUserRole(String userRole) {this.currentUserRole = userRole;}
 
+    public ArrayList<ArrayList<String>> getAssignedAddressMapValuesAsList(HashMap<String, String> assignedAddressMapInQuestion)
+    {
+        ArrayList<ArrayList<String>> tempAssignedAddressMapDerivedListList = new ArrayList<>(0);
+        ArrayList<String> tempAssignedAddressMapKeysList = new ArrayList<>(0);
+        ArrayList<String> tempAssignedAddressMapValuesList = new ArrayList<>(0);
+        for (HashMap.Entry<String, String> entry : assignedAddressMapInQuestion.entrySet())
+        {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            tempAssignedAddressMapKeysList.add(key);
+            tempAssignedAddressMapValuesList.add(value);
+        }
+        tempAssignedAddressMapDerivedListList.add(tempAssignedAddressMapKeysList);
+        tempAssignedAddressMapDerivedListList.add(tempAssignedAddressMapValuesList);
+        return tempAssignedAddressMapDerivedListList;
+    }
+
+    public HashMap<String, String> recomposeHashMap(ArrayList<String> keysList, ArrayList<String> valuesList)
+    {
+        HashMap<String, String> tempHashMap = new HashMap<>(0);
+        ArrayList<String> tempAssignedAddressMapKeysList = keysList;
+        ArrayList<String> tempAssignedAddressMapValuesList = valuesList;
+        for(int listIter = 0; listIter < tempAssignedAddressMapKeysList.size(); listIter++)
+        {
+            String key = tempAssignedAddressMapKeysList.get(listIter);
+            String value = tempAssignedAddressMapValuesList.get(listIter);
+            tempHashMap.put(key, value);
+        }
+        return tempHashMap;
+    }
 
     //can't use StringDef within User class because Firestore doesn't recognize it
     /*
@@ -184,7 +214,9 @@ public class User implements Parcelable {
         parcel.writeString(firstName);
         parcel.writeString(lastName);
         parcel.writeString(fullName);
-        parcel.writeStringList(assignedAddressList);
+        ArrayList<ArrayList<String>> tempList = getAssignedAddressMapValuesAsList(assignedAddressMap);
+        parcel.writeStringList(tempList.get(0));
+        parcel.writeStringList(tempList.get(1));
         parcel.writeStringList(assignedEmployeeIDList);
         parcel.writeString(currentUserRole);
 

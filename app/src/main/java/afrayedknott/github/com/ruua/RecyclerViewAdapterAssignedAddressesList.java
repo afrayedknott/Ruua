@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecyclerViewAdapterAssignedAddressesList extends RecyclerView.Adapter<RecyclerViewAdapterAssignedAddressesList.ViewHolder> {
 
@@ -16,9 +17,10 @@ public class RecyclerViewAdapterAssignedAddressesList extends RecyclerView.Adapt
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    RecyclerViewAdapterAssignedAddressesList(Context context, ArrayList<String> inputAddressList) {
+    RecyclerViewAdapterAssignedAddressesList(Context context, HashMap<String, String> inputAddressMap) {
         this.mInflater = LayoutInflater.from(context);
-        this.assignedAddressList = inputAddressList;
+        this.assignedAddressList = new ArrayList<>(0);
+        convertAssignedAddressMapToList(inputAddressMap);
     }
 
     // inflates the row layout from xml when needed
@@ -71,5 +73,13 @@ public class RecyclerViewAdapterAssignedAddressesList extends RecyclerView.Adapt
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    private void convertAssignedAddressMapToList(HashMap<String, String> convertableAddressMap)
+    {
+        for(HashMap.Entry<String, String> entry : convertableAddressMap.entrySet())
+        {
+            assignedAddressList.add(entry.getValue());
+        }
     }
 }

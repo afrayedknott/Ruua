@@ -24,7 +24,7 @@ public class AddressListActivity extends AppCompatActivity implements RecyclerVi
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view_address_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecyclerViewAdapterAssignedAddressesList(this, clickedUser.getAssignedAddressList());
+        adapter = new RecyclerViewAdapterAssignedAddressesList(this, clickedUser.getAssignedAddressMap());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
@@ -35,8 +35,8 @@ public class AddressListActivity extends AppCompatActivity implements RecyclerVi
 
         Intent intentToStartActivity =
                 new Intent(this, AddressEditorActivity.class);
-        intentToStartActivity.putExtra("address", clickedUser.getAssignedAddressList().get(position));
-        intentToStartActivity.putStringArrayListExtra("address_list", clickedUser.getAssignedAddressList());
+        intentToStartActivity.putExtra("address", clickedUser.getAssignedAddressMap().get(position));
+        intentToStartActivity.putExtra("address_list", clickedUser.getAssignedAddressMap());
         startActivity(intentToStartActivity);
 
     }

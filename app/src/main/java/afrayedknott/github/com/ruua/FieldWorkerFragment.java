@@ -1,9 +1,13 @@
 package afrayedknott.github.com.ruua;
 
+import android.Manifest;
 import android.app.Fragment;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +34,10 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
     private OnFragmentInteractionListener mListener;
     private RecyclerViewAdapterAssignedAddressesList adapter;
     private LocationHandler locationHandler;
+    private PendingIntent geofencePendingIntent;
+    private GeofenceManager geofenceManager;
+
+    private static final int REQUEST_CODE_LOCATION = 2;
 
     public FieldWorkerFragment() {
         // Required empty public constructor
@@ -58,6 +66,13 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
             signedInUser = getArguments().getParcelable(ARG_PARAM1);
         }
 
+        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+        } else {
+            // Location permission has been granted, continue as usual.
+            geofenceManager = new GeofenceManager(this.getActivity(), getGeofencePendingIntent());
+            getGeofencePendingIntent();
+        }
     }
 
     @Override
@@ -68,7 +83,7 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_field_worker_name_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAssignedAddressList());
+        adapter = new RecyclerViewAdapterAssignedAddressesList(this.getActivity(), signedInUser.getAssignedAddressMap());
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
         return view;
@@ -120,7 +135,7 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
     @Override
     public void onItemClick(View view, int position) {
 
-        String targetDestination = signedInUser.getAssignedAddressList().get(position);
+        String targetDestination = signedInUser.getAssignedAddressMap().get(position);
         locationHandler =
                 new LocationHandler(this.getActivity(), targetDestination);
         double targetLat = locationHandler.getLatLng().latitude;
@@ -134,6 +149,19 @@ public class FieldWorkerFragment extends Fragment implements RecyclerViewAdapter
         /*TODO: Currently leads to AddressEditorActivity but it should actually call up Google Map Directions to provide utility for field workers
          */
 
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        // Reuse the PendingIntent if we already have it.
+        if (geofencePendingIntent != null) {
+            return geofencePendingIntent;
+        }
+        Intent intent = new Intent(this.getActivity(), GeofenceTransitionsIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when
+        // calling addGeofences() and removeGeofences().
+        geofencePendingIntent =
+                PendingIntent.getService(this.getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return geofencePendingIntent;
     }
 
 }
