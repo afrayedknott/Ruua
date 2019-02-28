@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GeofenceManager {
 
@@ -27,6 +28,7 @@ public class GeofenceManager {
     private Context context;
     private GeofencingClient geofencingClient;
     private ArrayList<Geofence> geofenceList;
+    private HashMap<String, Boolean> siteVisitedMap;
     private String geofenceKey;
     private PendingIntent pendingIntent;
 
